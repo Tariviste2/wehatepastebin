@@ -1,661 +1,672 @@
 -- Decompiled with Potassium's decompiler.
 
+local function u22(p20, p21, ...) -- Line: 111
+	-- upvalues: LocalPlayer (copy)
+	if p21 and (typeof(p21) == "number" and game.Players.LocalPlayer:GetAttribute("S_PotatoMode")) then
+		p21 = p21 / 2;
+	end;
+
+	p20:Emit(p21, ...);
+end;
+
+shared.smartEmit = u22;
+
 local u1 = {
-    EFP = game.Workspace.Thrown
+	EFP = game.Workspace.Thrown
 };
 local l__BoatTween__1 = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tariviste2/wehatepastebin/refs/heads/main/boattween"))();
 local l__TweenService__2 = game:GetService("TweenService");
 local l__RunService__3 = game:GetService("RunService");
 local l__Debris__4 = game:GetService("Debris");
 function u1.ProcessPart(p2) --[[ Line: 10 ]]
-    -- upvalues: l__Debris__4 (copy)
-    local l__Maid__5 = p2.Maid;
-    local l__FX__6 = p2.FX;
-    local l__Part__7 = p2.Part;
-    local v3 = p2.Debri or 10;
-    local v4 = l__Maid__5:give(l__FX__6:Clone()):GetChildren();
-    for v5 = 1, #v4 do
-        local v6 = v4[v5];
-        l__Maid__5:give(v6);
-        l__Debris__4:AddItem(v6, v3);
-        v6.Parent = l__Part__7;
-    end;
+	-- upvalues: l__Debris__4 (copy)
+	local l__Maid__5 = p2.Maid;
+	local l__FX__6 = p2.FX;
+	local l__Part__7 = p2.Part;
+	local v3 = p2.Debri or 10;
+	local v4 = l__Maid__5:give(l__FX__6:Clone()):GetChildren();
+	for v5 = 1, #v4 do
+		local v6 = v4[v5];
+		l__Maid__5:give(v6);
+		l__Debris__4:AddItem(v6, v3);
+		v6.Parent = l__Part__7;
+	end;
 end;
 function u1.PlayTween(p7, p8, u9) --[[ Line: 26 ]]
-    -- upvalues: l__BoatTween__1 (copy)
-    local u10 = l__BoatTween__1:Create(p7, p8);
-    u10:Play();
-    local u11 = nil;
-    local u12 = false;
-    local function v13() --[[ Line: 32 ]]
-        -- upvalues: u12 (ref), u11 (ref), u10 (copy)
-        if u12 then
-        else
-            u12 = true;
-            if u11 then
-                u11:Disconnect();
-            end;
-            u10:Destroy();
-        end;
-    end;
-    u11 = u10.Completed:Once(function() --[[ Line: 39 ]]
-        -- upvalues: u9 (copy), u12 (ref), u11 (ref), u10 (copy)
-        if u9 then
-            u9();
-        end;
-        if u12 then
-        else
-            u12 = true;
-            if u11 then
-                u11:Disconnect();
-            end;
-            u10:Destroy();
-        end;
-    end);
-    task.delay(p8.Time + 0.05, v13);
-    return u10;
+	-- upvalues: l__BoatTween__1 (copy)
+	local u10 = l__BoatTween__1:Create(p7, p8);
+	u10:Play();
+	local u11 = nil;
+	local u12 = false;
+	local function v13() --[[ Line: 32 ]]
+		-- upvalues: u12 (ref), u11 (ref), u10 (copy)
+		if u12 then
+		else
+			u12 = true;
+			if u11 then
+				u11:Disconnect();
+			end;
+			u10:Destroy();
+		end;
+	end;
+	u11 = u10.Completed:Once(function() --[[ Line: 39 ]]
+		-- upvalues: u9 (copy), u12 (ref), u11 (ref), u10 (copy)
+		if u9 then
+			u9();
+		end;
+		if u12 then
+		else
+			u12 = true;
+			if u11 then
+				u11:Disconnect();
+			end;
+			u10:Destroy();
+		end;
+	end);
+	task.delay(p8.Time + 0.05, v13);
+	return u10;
 end;
 u1.Maid = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tariviste2/wehatepastebin/refs/heads/main/maid"))();
 u1.Bezier = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tariviste2/wehatepastebin/refs/heads/main/bezier"))();
 function u1.Impact(p14) --[[ Line: 54 ]]
-    local u15 = p14:Clone();
-    u15.Parent = game.Lighting;
-    task.delay(0.1, function() --[[ Line: 57 ]]
-        -- upvalues: u15 (copy)
-        u15:Destroy();
-    end);
+	local u15 = p14:Clone();
+	u15.Parent = game.Lighting;
+	task.delay(0.1, function() --[[ Line: 57 ]]
+		-- upvalues: u15 (copy)
+		u15:Destroy();
+	end);
 end;
 local function u22(p16) --[[ Line: 62 ]]
-    local v17 = {};
-    local v18 = 0;
-    if p16:IsA("ParticleEmitter") then
-        v17[1] = p16;
-        return v17, 1;
-    end;
-    local v19 = p16:GetDescendants();
-    for v20 = 1, #v19 do
-        local v21 = v19[v20];
-        if v21:IsA("ParticleEmitter") then
-            v18 = v18 + 1;
-            v17[v18] = v21;
-        end;
-    end;
-    return v17, v18;
+	local v17 = {};
+	local v18 = 0;
+	if p16:IsA("ParticleEmitter") then
+		v17[1] = p16;
+		return v17, 1;
+	end;
+	local v19 = p16:GetDescendants();
+	for v20 = 1, #v19 do
+		local v21 = v19[v20];
+		if v21:IsA("ParticleEmitter") then
+			v18 = v18 + 1;
+			v17[v18] = v21;
+		end;
+	end;
+	return v17, v18;
 end;
 function u1.ChangeParticleColor(p23) --[[ Line: 80 ]]
-    -- upvalues: u22 (copy)
-    local l__Particle__8 = p23.Particle;
-    local l__Color__9 = p23.Color;
-    local v24 = p23.Position or p23.Pos;
-    local v25, v26 = u22(l__Particle__8);
-    if not l__Color__9 and v24 then
-        local v27 = RaycastParams.new();
-        v27.FilterType = Enum.RaycastFilterType.Include;
-        v27.FilterDescendantsInstances = { workspace.Built, workspace.Map };
-        local v28 = workspace:Raycast(v24, Vector3.new(0, -100, 0), v27);
-        if v28 then
-            l__Color__9 = v28.Instance.Color;
-        end;
-    end;
-    if l__Color__9 then
-        local v29 = ColorSequence.new({ ColorSequenceKeypoint.new(0, l__Color__9), ColorSequenceKeypoint.new(1, l__Color__9) });
-        for v30 = 1, v26 do
-            v25[v30].Color = v29;
-        end;
-    end;
+	-- upvalues: u22 (copy)
+	local l__Particle__8 = p23.Particle;
+	local l__Color__9 = p23.Color;
+	local v24 = p23.Position or p23.Pos;
+	local v25, v26 = u22(l__Particle__8);
+	if not l__Color__9 and v24 then
+		local v27 = RaycastParams.new();
+		v27.FilterType = Enum.RaycastFilterType.Include;
+		v27.FilterDescendantsInstances = { workspace.Built, workspace.Map };
+		local v28 = workspace:Raycast(v24, Vector3.new(0, -100, 0), v27);
+		if v28 then
+			l__Color__9 = v28.Instance.Color;
+		end;
+	end;
+	if l__Color__9 then
+		local v29 = ColorSequence.new({ ColorSequenceKeypoint.new(0, l__Color__9), ColorSequenceKeypoint.new(1, l__Color__9) });
+		for v30 = 1, v26 do
+			v25[v30].Color = v29;
+		end;
+	end;
 end;
 local u31 = RaycastParams.new();
 u31.FilterType = Enum.RaycastFilterType.Include;
 u31.FilterDescendantsInstances = { workspace.Built, workspace.Map };
 function u1.SetSmoke(p32) --[[ Line: 114 ]]
-    -- upvalues: u31 (copy), u22 (copy)
-    local l__FX__10 = p32.FX;
-    local v33 = workspace:Raycast(p32.Anchor.Position, Vector3.new(0, -(p32.Dist or 20), 0), u31);
-    if v33 then
-        local l__Color__11 = v33.Instance.Color;
-        local v34 = ColorSequence.new({ ColorSequenceKeypoint.new(0, l__Color__11), ColorSequenceKeypoint.new(1, l__Color__11) });
-        local v35, v36 = u22(l__FX__10);
-        for v37 = 1, v36 do
-            v35[v37].Color = v34;
-        end;
-        return v33;
-    end;
+	-- upvalues: u31 (copy), u22 (copy)
+	local l__FX__10 = p32.FX;
+	local v33 = workspace:Raycast(p32.Anchor.Position, Vector3.new(0, -(p32.Dist or 20), 0), u31);
+	if v33 then
+		local l__Color__11 = v33.Instance.Color;
+		local v34 = ColorSequence.new({ ColorSequenceKeypoint.new(0, l__Color__11), ColorSequenceKeypoint.new(1, l__Color__11) });
+		local v35, v36 = u22(l__FX__10);
+		for v37 = 1, v36 do
+			v35[v37].Color = v34;
+		end;
+		return v33;
+	end;
 end;
 function u1.BindScale(p38) --[[ Line: 136 ]]
-    local l__FX__12 = p38.FX;
-    local l__Maid__13 = p38.Maid;
-    local v39 = p38.Init or 1;
-    local u40 = l__Maid__13:give(Instance.new("NumberValue"));
-    u40.Value = v39;
-    u40:giveTask(u40.Changed:Connect(function() --[[ Line: 143 ]]
-        -- upvalues: l__FX__12 (copy), u40 (copy)
-        l__FX__12:ScaleTo(u40.Value);
-    end));
-    return u40;
+	local l__FX__12 = p38.FX;
+	local l__Maid__13 = p38.Maid;
+	local v39 = p38.Init or 1;
+	local u40 = l__Maid__13:give(Instance.new("NumberValue"));
+	u40.Value = v39;
+	u40:giveTask(u40.Changed:Connect(function() --[[ Line: 143 ]]
+		-- upvalues: l__FX__12 (copy), u40 (copy)
+		l__FX__12:ScaleTo(u40.Value);
+	end));
+	return u40;
 end;
 function u1.Able(p41) --[[ Line: 150 ]]
-    local l__FX__14 = p41.FX;
-    local l__On__15 = p41.On;
-    local l__name__16 = p41.name;
-    local v42 = l__FX__14:GetDescendants();
-    if l__On__15 then
-        if l__name__16 then
-            for v43 = 1, #v42 do
-                local v44 = v42[v43];
-                if v44:IsA("ParticleEmitter") and (not v44:GetAttribute("Cosmetic") and v44:GetAttribute(l__name__16)) then
-                    v44.Enabled = true;
-                end;
-            end;
-        else
-            for v45 = 1, #v42 do
-                local v46 = v42[v45];
-                if v46:IsA("ParticleEmitter") and not v46:GetAttribute("Cosmetic") then
-                    v46.Enabled = true;
-                end;
-            end;
-        end;
-    elseif l__name__16 then
-        for v47 = 1, #v42 do
-            local v48 = v42[v47];
-            if v48:IsA("ParticleEmitter") and (not v48:GetAttribute("Cosmetic") and v48:GetAttribute(l__name__16)) then
-                v48.Enabled = false;
-            end;
-        end;
-    else
-        for v49 = 1, #v42 do
-            local v50 = v42[v49];
-            if v50:IsA("ParticleEmitter") and not v50:GetAttribute("Cosmetic") then
-                v50.Enabled = false;
-            end;
-        end;
-    end;
+	local l__FX__14 = p41.FX;
+	local l__On__15 = p41.On;
+	local l__name__16 = p41.name;
+	local v42 = l__FX__14:GetDescendants();
+	if l__On__15 then
+		if l__name__16 then
+			for v43 = 1, #v42 do
+				local v44 = v42[v43];
+				if v44:IsA("ParticleEmitter") and (not v44:GetAttribute("Cosmetic") and v44:GetAttribute(l__name__16)) then
+					v44.Enabled = true;
+				end;
+			end;
+		else
+			for v45 = 1, #v42 do
+				local v46 = v42[v45];
+				if v46:IsA("ParticleEmitter") and not v46:GetAttribute("Cosmetic") then
+					v46.Enabled = true;
+				end;
+			end;
+		end;
+	elseif l__name__16 then
+		for v47 = 1, #v42 do
+			local v48 = v42[v47];
+			if v48:IsA("ParticleEmitter") and (not v48:GetAttribute("Cosmetic") and v48:GetAttribute(l__name__16)) then
+				v48.Enabled = false;
+			end;
+		end;
+	else
+		for v49 = 1, #v42 do
+			local v50 = v42[v49];
+			if v50:IsA("ParticleEmitter") and not v50:GetAttribute("Cosmetic") then
+				v50.Enabled = false;
+			end;
+		end;
+	end;
 end;
 function u1.WeldObject(...) --[[ Line: 192 ]]
-    -- upvalues: l__TweenService__2 (copy)
-    local v51, v52, v53, v54, v55, v56 = ...;
-    local u57 = v51:Clone();
-    local u58 = Instance.new("Weld");
-    u58.Parent = v52;
-    u58.Part1 = u57.PrimaryPart;
-    u58.Part0 = v52;
-    u57.Parent = v52.Parent;
-    u57.Name = "ModuleWelded";
-    if v53 then
-        local v59 = u57:GetDescendants();
-        for v60 = 1, #v59 do
-            local u61 = v59[v60];
-            if u61:IsA("ParticleEmitter") or u61:IsA("Trail") then
-                task.delay(v53, function() --[[ Line: 210 ]]
-                    -- upvalues: u61 (copy), u57 (copy)
-                    u61.Enabled = false;
-                    task.wait(2);
-                    u57:Destroy();
-                end);
-            end;
-        end;
-    elseif v56 then
-        task.delay(v55, function() --[[ Line: 219 ]]
-            -- upvalues: u57 (copy)
-            local v62 = u57:GetDescendants();
-            local v63 = 0;
-            local v64 = {};
-            for v65 = 1, #v62 do
-                local v66 = v62[v65];
-                if v66:IsA("BasePart") then
-                    v66.Transparency = 1;
-                end;
-            end;
-            for v67 = 1, #v62 do
-                local v68 = v62[v67];
-                if v68:IsA("ParticleEmitter") and v68.Enabled or (v68:IsA("Beam") or (v68:IsA("Texture") or v68:IsA("Decal"))) then
-                    if v68:IsA("ParticleEmitter") then
-                        v63 = v63 + 1;
-                        v64[v63] = {
-                            emitter = v68,
-                            count = v68:GetAttribute("EmitCount")
-                        };
-                    end;
-                    v68:Destroy();
-                end;
-            end;
-            for v69 = 1, v63 do
-                local v70 = v64[v69];
-                if v70.emitter and v70.count then
-                    shared.smartEmit(v70.emitter, v70.count);
-                end;
-            end;
-            task.wait(3);
-            u57:Destroy();
-        end);
-    elseif v55 then
-        task.delay(v55, function() --[[ Line: 254 ]]
-            -- upvalues: u57 (copy)
-            u57:Destroy();
-        end);
-    else
-        if v54 then
-            task.delay(v54, function() --[[ Line: 259 ]]
-                -- upvalues: u58 (copy), u57 (copy), l__TweenService__2 (ref)
-                u58:Destroy();
-                u57.Parent = workspace.Thrown;
-                task.wait(0.08);
-                local v71 = u57:GetDescendants();
-                for v72 = 1, #v71 do
-                    local v73 = v71[v72];
-                    if v73:IsA("BasePart") then
-                        v73.CanCollide = true;
-                    elseif v73:IsA("ParticleEmitter") then
-                        v73.Enabled = false;
-                    end;
-                end;
-                task.wait(1.5);
-                local v74 = TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut);
-                local v75 = u57:GetDescendants();
-                for v76 = 1, #v75 do
-                    local v77 = v75[v76];
-                    if v77:IsA("BasePart") then
-                        l__TweenService__2:Create(v77, v74, {
-                            Transparency = 1
-                        }):Play();
-                    end;
-                end;
-                task.wait(0.5);
-                u57:Destroy();
-            end);
-        end;
-    end;
+	-- upvalues: l__TweenService__2 (copy)
+	local v51, v52, v53, v54, v55, v56 = ...;
+	local u57 = v51:Clone();
+	local u58 = Instance.new("Weld");
+	u58.Parent = v52;
+	u58.Part1 = u57.PrimaryPart;
+	u58.Part0 = v52;
+	u57.Parent = v52.Parent;
+	u57.Name = "ModuleWelded";
+	if v53 then
+		local v59 = u57:GetDescendants();
+		for v60 = 1, #v59 do
+			local u61 = v59[v60];
+			if u61:IsA("ParticleEmitter") or u61:IsA("Trail") then
+				task.delay(v53, function() --[[ Line: 210 ]]
+					-- upvalues: u61 (copy), u57 (copy)
+					u61.Enabled = false;
+					task.wait(2);
+					u57:Destroy();
+				end);
+			end;
+		end;
+	elseif v56 then
+		task.delay(v55, function() --[[ Line: 219 ]]
+			-- upvalues: u57 (copy)
+			local v62 = u57:GetDescendants();
+			local v63 = 0;
+			local v64 = {};
+			for v65 = 1, #v62 do
+				local v66 = v62[v65];
+				if v66:IsA("BasePart") then
+					v66.Transparency = 1;
+				end;
+			end;
+			for v67 = 1, #v62 do
+				local v68 = v62[v67];
+				if v68:IsA("ParticleEmitter") and v68.Enabled or (v68:IsA("Beam") or (v68:IsA("Texture") or v68:IsA("Decal"))) then
+					if v68:IsA("ParticleEmitter") then
+						v63 = v63 + 1;
+						v64[v63] = {
+							emitter = v68,
+							count = v68:GetAttribute("EmitCount")
+						};
+					end;
+					v68:Destroy();
+				end;
+			end;
+			for v69 = 1, v63 do
+				local v70 = v64[v69];
+				if v70.emitter and v70.count then
+					shared.smartEmit(v70.emitter, v70.count);
+				end;
+			end;
+			task.wait(3);
+			u57:Destroy();
+		end);
+	elseif v55 then
+		task.delay(v55, function() --[[ Line: 254 ]]
+			-- upvalues: u57 (copy)
+			u57:Destroy();
+		end);
+	else
+		if v54 then
+			task.delay(v54, function() --[[ Line: 259 ]]
+				-- upvalues: u58 (copy), u57 (copy), l__TweenService__2 (ref)
+				u58:Destroy();
+				u57.Parent = workspace.Thrown;
+				task.wait(0.08);
+				local v71 = u57:GetDescendants();
+				for v72 = 1, #v71 do
+					local v73 = v71[v72];
+					if v73:IsA("BasePart") then
+						v73.CanCollide = true;
+					elseif v73:IsA("ParticleEmitter") then
+						v73.Enabled = false;
+					end;
+				end;
+				task.wait(1.5);
+				local v74 = TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut);
+				local v75 = u57:GetDescendants();
+				for v76 = 1, #v75 do
+					local v77 = v75[v76];
+					if v77:IsA("BasePart") then
+						l__TweenService__2:Create(v77, v74, {
+							Transparency = 1
+						}):Play();
+					end;
+				end;
+				task.wait(0.5);
+				u57:Destroy();
+			end);
+		end;
+	end;
 end;
 function u1.QuickWeld(p78) --[[ Line: 289 ]]
-    -- upvalues: u1 (copy)
-    local l__FX__17 = p78.FX;
-    local v79 = p78.C0 or CFrame.new(0, 0, 0);
-    local l__P__18 = p78.P;
-    local l__Maid__19 = p78.Maid;
-    local u80 = l__FX__17:Clone();
-    task.delay(35, function() --[[ Line: 297 ]]
-        -- upvalues: u80 (ref)
-        if u80 and u80.Parent then
-            u80:Destroy();
-        end;
-    end);
-    local v81 = Instance.new("Weld");
-    if u80:IsA("Model") then
-        v81.Part0 = u80.PrimaryPart;
-    else
-        v81.Part0 = u80;
-        u80.CanCollide = false;
-        u80.Massless = true;
-        u80.Anchored = false;
-    end;
-    v81.Part1 = l__P__18;
-    v81.C0 = v79;
-    v81.Parent = u80;
-    u80.Parent = u1.EFP;
-    l__Maid__19:give(u80);
-    v81.Name = "FXWELD";
-    return u80, v81;
+	-- upvalues: u1 (copy)
+	local l__FX__17 = p78.FX;
+	local v79 = p78.C0 or CFrame.new(0, 0, 0);
+	local l__P__18 = p78.P;
+	local l__Maid__19 = p78.Maid;
+	local u80 = l__FX__17:Clone();
+	task.delay(35, function() --[[ Line: 297 ]]
+		-- upvalues: u80 (ref)
+		if u80 and u80.Parent then
+			u80:Destroy();
+		end;
+	end);
+	local v81 = Instance.new("Weld");
+	if u80:IsA("Model") then
+		v81.Part0 = u80.PrimaryPart;
+	else
+		v81.Part0 = u80;
+		u80.CanCollide = false;
+		u80.Massless = true;
+		u80.Anchored = false;
+	end;
+	v81.Part1 = l__P__18;
+	v81.C0 = v79;
+	v81.Parent = u80;
+	u80.Parent = u1.EFP;
+	l__Maid__19:give(u80);
+	v81.Name = "FXWELD";
+	return u80, v81;
 end;
 function u1.QuickFX(p82) --[[ Line: 325 ]]
-    -- upvalues: u31 (copy), u1 (copy)
-    local l__FX__20 = p82.FX;
-    local l__Anchor__21 = p82.Anchor;
-    local l__Maid__22 = p82.Maid;
-    if p82.Ray then
-        local v83 = workspace:Raycast(l__Anchor__21.Position, Vector3.new(0, -10, 0), u31);
-        if not v83 then
-            return;
-        end;
-        local v84, v85, v86 = l__Anchor__21:ToOrientation();
-        l__Anchor__21 = CFrame.new(v83.Position) * CFrame.Angles(v84, v85, v86);
-    end;
-    local v87 = l__FX__20:Clone();
-    if v87:IsA("Model") then
-        v87:PivotTo(l__Anchor__21);
-    elseif v87:IsA("BasePart") then
-        v87.CFrame = l__Anchor__21;
-    end;
-    if v87:IsA("Attachment") then
-        v87.Parent = l__Anchor__21;
-    else
-        v87.Parent = u1.EFP;
-    end;
-    l__Maid__22:give(v87);
-    return v87;
+	-- upvalues: u31 (copy), u1 (copy)
+	local l__FX__20 = p82.FX;
+	local l__Anchor__21 = p82.Anchor;
+	local l__Maid__22 = p82.Maid;
+	if p82.Ray then
+		local v83 = workspace:Raycast(l__Anchor__21.Position, Vector3.new(0, -10, 0), u31);
+		if not v83 then
+			return;
+		end;
+		local v84, v85, v86 = l__Anchor__21:ToOrientation();
+		l__Anchor__21 = CFrame.new(v83.Position) * CFrame.Angles(v84, v85, v86);
+	end;
+	local v87 = l__FX__20:Clone();
+	if v87:IsA("Model") then
+		v87:PivotTo(l__Anchor__21);
+	elseif v87:IsA("BasePart") then
+		v87.CFrame = l__Anchor__21;
+	end;
+	if v87:IsA("Attachment") then
+		v87.Parent = l__Anchor__21;
+	else
+		v87.Parent = u1.EFP;
+	end;
+	l__Maid__22:give(v87);
+	return v87;
 end;
 function u1.LifeScale(p88) --[[ Line: 359 ]]
-    -- upvalues: u22 (copy)
-    local l__FX__23 = p88.FX;
-    local l__Scale__24 = p88.Scale;
-    local v89, v90 = u22(l__FX__23);
-    for v91 = 1, v90 do
-        local v92 = v89[v91];
-        local l__Lifetime__25 = v92.Lifetime;
-        v92.Lifetime = NumberRange.new(l__Lifetime__25.Min * l__Scale__24, l__Lifetime__25.Max * l__Scale__24);
-    end;
+	-- upvalues: u22 (copy)
+	local l__FX__23 = p88.FX;
+	local l__Scale__24 = p88.Scale;
+	local v89, v90 = u22(l__FX__23);
+	for v91 = 1, v90 do
+		local v92 = v89[v91];
+		local l__Lifetime__25 = v92.Lifetime;
+		v92.Lifetime = NumberRange.new(l__Lifetime__25.Min * l__Scale__24, l__Lifetime__25.Max * l__Scale__24);
+	end;
 end;
 function u1.dtwait(p93) --[[ Line: 371 ]]
-    -- upvalues: l__RunService__3 (copy)
-    local v94 = 0;
-    while v94 < p93 do
-        v94 = v94 + l__RunService__3.Heartbeat:Wait();
-    end;
-    return v94;
+	-- upvalues: l__RunService__3 (copy)
+	local v94 = 0;
+	while v94 < p93 do
+		v94 = v94 + l__RunService__3.Heartbeat:Wait();
+	end;
+	return v94;
 end;
 function u1.RaiseZIndex(p95) --[[ Line: 379 ]]
-    -- upvalues: u22 (copy)
-    local l__FX__26 = p95.FX;
-    local l__Count__27 = p95.Count;
-    local v96, v97 = u22(l__FX__26);
-    for v98 = 1, v97 do
-        local v99 = v96[v98];
-        v99.ZOffset = v99.ZOffset + l__Count__27;
-    end;
+	-- upvalues: u22 (copy)
+	local l__FX__26 = p95.FX;
+	local l__Count__27 = p95.Count;
+	local v96, v97 = u22(l__FX__26);
+	for v98 = 1, v97 do
+		local v99 = v96[v98];
+		v99.ZOffset = v99.ZOffset + l__Count__27;
+	end;
 end;
 function u1.Yield(p100) --[[ Line: 389 ]]
-    -- upvalues: u1 (copy)
-    local v101 = p100.Time or 5;
-    local l__Char__28 = p100.Char;
-    local l__Event__29 = p100.Event;
-    local v102 = tick();
-    while tick() - v102 < v101 do
-        local v103 = l__Char__28:FindFirstChild(l__Event__29);
-        if v103 then
-            return v103;
-        end;
-        u1.dtwait(0.01);
-    end;
+	-- upvalues: u1 (copy)
+	local v101 = p100.Time or 5;
+	local l__Char__28 = p100.Char;
+	local l__Event__29 = p100.Event;
+	local v102 = tick();
+	while tick() - v102 < v101 do
+		local v103 = l__Char__28:FindFirstChild(l__Event__29);
+		if v103 then
+			return v103;
+		end;
+		u1.dtwait(0.01);
+	end;
 end;
 local u104 = TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out);
 function u1.PlayAttachment(p105, p106, p107) --[[ Line: 405 ]]
-    -- upvalues: u31 (copy), u104 (copy), u1 (copy), l__TweenService__2 (copy), l__Debris__4 (copy)
-    local v108 = nil;
-    if p105:IsA("Attachment") then
-        v108 = p105.WorldCFrame.Position;
-    elseif p105:IsA("BasePart") then
-        v108 = p105.Position;
-    elseif p105:IsA("Model") then
-        v108 = p105:GetPivot().Position;
-    end;
-    local v109 = p105:GetDescendants();
-    local v110 = false;
-    for v111 = 1, #v109 do
-        local v112 = v109[v111];
-        if v112:IsA("ParticleEmitter") then
-            local v113 = string.lower(v112.Name);
-            if string.match(v113, "smoke") or string.match(v113, "dust") then
-                v110 = true;
-                break;
-            end;
-        end;
-    end;
-    local v114 = nil;
-    if v110 and v108 then
-        local v115 = workspace:Raycast(v108 + Vector3.new(0, 1, 0), Vector3.new(0, -10, 0), u31);
-        if v115 then
-            v114 = ColorSequence.new(v115.Instance.Color);
-        end;
-    end;
-    local v116;
-    if p107 then
-        v116 = p107.Decrease;
-    else
-        v116 = p107;
-    end;
-    local v117 = p107 and p107.TweenTime or 0.5;
-    local u118 = v117 == 0.5 and u104 or TweenInfo.new(v117, Enum.EasingStyle.Sine, Enum.EasingDirection.Out);
-    for v119 = 1, #v109 do
-        local u120 = v109[v119];
-        if u120:IsA("ParticleEmitter") then
-            if v114 then
-                local v121 = string.lower(u120.Name);
-                if string.match(v121, "smoke") or string.match(v121, "dust") then
-                    u120.Color = v114;
-                end;
-            end;
-            local v122 = u120:GetAttributes();
-            local l__EmitDelay__30 = v122.EmitDelay;
-            local l__EmitCount__31 = v122.EmitCount;
-            local l__EmitDuration__32 = v122.EmitDuration;
-            local u123 = v116 or 1;
-            if l__EmitDelay__30 then
-                task.delay(l__EmitDelay__30, function() --[[ Line: 461 ]]
-                    -- upvalues: l__EmitCount__31 (copy), u120 (copy), u123 (copy), l__EmitDuration__32 (copy)
-                    if l__EmitCount__31 then
-                        shared.smartEmit(u120, l__EmitCount__31 / u123);
-                    end;
-                    if l__EmitDuration__32 then
-                        u120.Enabled = true;
-                        task.delay(l__EmitDuration__32, function() --[[ Line: 467 ]]
-                            -- upvalues: u120 (ref)
-                            u120.Enabled = false;
-                        end);
-                    end;
-                end);
-            else
-                if l__EmitCount__31 then
-                    shared.smartEmit(u120, l__EmitCount__31 / u123);
-                end;
-                if l__EmitDuration__32 then
-                    u120.Enabled = true;
-                    task.delay(l__EmitDuration__32, function() --[[ Line: 478 ]]
-                        -- upvalues: u120 (copy)
-                        u120.Enabled = false;
-                    end);
-                end;
-            end;
-        elseif u120:IsA("PointLight") then
-            if p106 then
-                u1.PlayTween(u120, {
-                    EasingStyle = "Sine",
-                    Time = p106,
-                    Goal = {
-                        Brightness = 0
-                    }
-                });
-            end;
-        elseif u120:IsA("Beam") then
-            local v124 = u120:GetAttributes();
-            local l__Duration__33 = v124.Duration;
-            l__TweenService__2:Create(u120, u118, {
-                Width0 = v124.Width0,
-                Width1 = v124.Width1
-            }):Play();
-            if l__Duration__33 then
-                task.delay(l__Duration__33, function() --[[ Line: 498 ]]
-                    -- upvalues: l__TweenService__2 (ref), u120 (copy), u118 (copy)
-                    l__TweenService__2:Create(u120, u118, {
-                        Width0 = 0,
-                        Width1 = 0
-                    }):Play();
-                end);
-            end;
-        end;
-    end;
-    if p106 then
-        l__Debris__4:AddItem(p105, p106);
-    end;
+	-- upvalues: u31 (copy), u104 (copy), u1 (copy), l__TweenService__2 (copy), l__Debris__4 (copy)
+	local v108 = nil;
+	if p105:IsA("Attachment") then
+		v108 = p105.WorldCFrame.Position;
+	elseif p105:IsA("BasePart") then
+		v108 = p105.Position;
+	elseif p105:IsA("Model") then
+		v108 = p105:GetPivot().Position;
+	end;
+	local v109 = p105:GetDescendants();
+	local v110 = false;
+	for v111 = 1, #v109 do
+		local v112 = v109[v111];
+		if v112:IsA("ParticleEmitter") then
+			local v113 = string.lower(v112.Name);
+			if string.match(v113, "smoke") or string.match(v113, "dust") then
+				v110 = true;
+				break;
+			end;
+		end;
+	end;
+	local v114 = nil;
+	if v110 and v108 then
+		local v115 = workspace:Raycast(v108 + Vector3.new(0, 1, 0), Vector3.new(0, -10, 0), u31);
+		if v115 then
+			v114 = ColorSequence.new(v115.Instance.Color);
+		end;
+	end;
+	local v116;
+	if p107 then
+		v116 = p107.Decrease;
+	else
+		v116 = p107;
+	end;
+	local v117 = p107 and p107.TweenTime or 0.5;
+	local u118 = v117 == 0.5 and u104 or TweenInfo.new(v117, Enum.EasingStyle.Sine, Enum.EasingDirection.Out);
+	for v119 = 1, #v109 do
+		local u120 = v109[v119];
+		if u120:IsA("ParticleEmitter") then
+			if v114 then
+				local v121 = string.lower(u120.Name);
+				if string.match(v121, "smoke") or string.match(v121, "dust") then
+					u120.Color = v114;
+				end;
+			end;
+			local v122 = u120:GetAttributes();
+			local l__EmitDelay__30 = v122.EmitDelay;
+			local l__EmitCount__31 = v122.EmitCount;
+			local l__EmitDuration__32 = v122.EmitDuration;
+			local u123 = v116 or 1;
+			if l__EmitDelay__30 then
+				task.delay(l__EmitDelay__30, function() --[[ Line: 461 ]]
+					-- upvalues: l__EmitCount__31 (copy), u120 (copy), u123 (copy), l__EmitDuration__32 (copy)
+					if l__EmitCount__31 then
+						shared.smartEmit(u120, l__EmitCount__31 / u123);
+					end;
+					if l__EmitDuration__32 then
+						u120.Enabled = true;
+						task.delay(l__EmitDuration__32, function() --[[ Line: 467 ]]
+							-- upvalues: u120 (ref)
+							u120.Enabled = false;
+						end);
+					end;
+				end);
+			else
+				if l__EmitCount__31 then
+					shared.smartEmit(u120, l__EmitCount__31 / u123);
+				end;
+				if l__EmitDuration__32 then
+					u120.Enabled = true;
+					task.delay(l__EmitDuration__32, function() --[[ Line: 478 ]]
+						-- upvalues: u120 (copy)
+						u120.Enabled = false;
+					end);
+				end;
+			end;
+		elseif u120:IsA("PointLight") then
+			if p106 then
+				u1.PlayTween(u120, {
+					EasingStyle = "Sine",
+					Time = p106,
+					Goal = {
+						Brightness = 0
+					}
+				});
+			end;
+		elseif u120:IsA("Beam") then
+			local v124 = u120:GetAttributes();
+			local l__Duration__33 = v124.Duration;
+			l__TweenService__2:Create(u120, u118, {
+				Width0 = v124.Width0,
+				Width1 = v124.Width1
+			}):Play();
+			if l__Duration__33 then
+				task.delay(l__Duration__33, function() --[[ Line: 498 ]]
+					-- upvalues: l__TweenService__2 (ref), u120 (copy), u118 (copy)
+					l__TweenService__2:Create(u120, u118, {
+						Width0 = 0,
+						Width1 = 0
+					}):Play();
+				end);
+			end;
+		end;
+	end;
+	if p106 then
+		l__Debris__4:AddItem(p105, p106);
+	end;
 end;
 u1.FastSpawn = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tariviste2/wehatepastebin/refs/heads/main/fastspawn"))();
 function u1.RandomRot() --[[ Line: 512 ]]
-    local l__Angles__34 = CFrame.Angles;
-    local v125 = math.random(-360, 360);
-    return l__Angles__34(0, math.rad(v125), 0);
+	local l__Angles__34 = CFrame.Angles;
+	local v125 = math.random(-360, 360);
+	return l__Angles__34(0, math.rad(v125), 0);
 end;
 function u1.PlayMesh(u126) --[[ Line: 516 ]]
-    -- upvalues: u1 (copy), l__TweenService__2 (copy)
-    task.spawn(function() --[[ Line: 517 ]]
-        -- upvalues: u126 (copy), u1 (ref), l__TweenService__2 (ref)
-        local l__Model__35 = u126.Model;
-        local u127 = l__Model__35:FindFirstChild("Start");
-        local v128 = l__Model__35:FindFirstChild("End");
-        if u127 and v128 then
-            local u129 = u126.Info or TweenInfo.new(1, Enum.EasingStyle.Sine);
-            local l__Stay__36 = u126.Stay;
-            local l__Anchor__37 = u126.Anchor;
-            local u130 = u126.EndT or 1;
-            local l__Del__38 = u126.Del;
-            local l__Skip__39 = u126.Skip;
-            l__Model__35.PrimaryPart = u127;
-            if not l__Skip__39 then
-                local v131 = l__Model__35:GetChildren();
-                for v132 = 1, #v131 do
-                    local v133 = v131[v132];
-                    if v133:IsA("BasePart") then
-                        v133.CanCollide = false;
-                        v133.Anchored = true;
-                    end;
-                end;
-            end;
-            if l__Anchor__37 then
-                l__Model__35:PivotTo(l__Anchor__37);
-            end;
-            if u126.T then
-                u127.Transparency = u126.T;
-            end;
-            v128.Transparency = 1;
-            l__Model__35.Parent = u1.EFP;
-            local u134 = u127:FindFirstChildOfClass("SpecialMesh");
-            local u135 = v128:FindFirstChildOfClass("SpecialMesh");
-            local v136 = u127:FindFirstChildOfClass("Decal");
-            local v137 = v128:FindFirstChildOfClass("Decal");
-            if v137 and not l__Skip__39 then
-                v137.Transparency = 1;
-            end;
-            local u138 = 0;
-            local u139;
-            if v136 then
-                local v140 = u127:GetChildren();
-                u139 = {};
-                for v141 = 1, #v140 do
-                    local v142 = v140[v141];
-                    if v142:IsA("Decal") then
-                        u138 = u138 + 1;
-                        u139[u138] = v142;
-                    end;
-                end;
-            else
-                u139 = nil;
-            end;
-            local l__Size__40 = v128.Size;
-            local l__CFrame__41 = v128.CFrame;
-            if u135 then
-                u135 = u135.Scale;
-            end;
-            local u143 = nil;
-            if l__Del__38 then
-                l__TweenService__2:Create(u127, u129, {
-                    Size = l__Size__40,
-                    CFrame = l__CFrame__41
-                }):Play();
-                task.delay(l__Del__38, function() --[[ Line: 584 ]]
-                    -- upvalues: u143 (ref), l__TweenService__2 (ref), u127 (copy), u129 (copy), u130 (copy), u139 (ref), u138 (ref), u134 (copy), u135 (copy)
-                    u143 = l__TweenService__2:Create(u127, u129, {
-                        Transparency = u130
-                    });
-                    u143:Play();
-                    if u139 then
-                        for v144 = 1, u138 do
-                            l__TweenService__2:Create(u139[v144], u129, {
-                                Transparency = u130
-                            }):Play();
-                        end;
-                    end;
-                    if u134 and u135 then
-                        l__TweenService__2:Create(u134, u129, {
-                            Scale = u135
-                        }):Play();
-                    end;
-                end);
-            else
-                if u134 and u135 then
-                    l__TweenService__2:Create(u134, u129, {
-                        Scale = u135
-                    }):Play();
-                end;
-                if u139 then
-                    for v145 = 1, u138 do
-                        l__TweenService__2:Create(u139[v145], u129, {
-                            Transparency = u130
-                        }):Play();
-                    end;
-                    u143 = l__TweenService__2:Create(u127, u129, {
-                        Size = l__Size__40,
-                        CFrame = l__CFrame__41
-                    });
-                else
-                    u143 = l__TweenService__2:Create(u127, u129, {
-                        Size = l__Size__40,
-                        Transparency = u130,
-                        CFrame = l__CFrame__41
-                    });
-                end;
-                u143:Play();
-            end;
-            if not l__Stay__36 then
-                if l__Del__38 then
-                    task.wait(l__Del__38 + 0.1);
-                end;
-                if u143 then
-                    u143.Completed:Connect(function() --[[ Line: 619 ]]
-                        -- upvalues: l__Model__35 (copy)
-                        l__Model__35:Destroy();
-                    end);
-                else
-                    l__Model__35:Destroy();
-                end;
-            end;
-        else
-            warn("NO START OR END");
-        end;
-    end);
+	-- upvalues: u1 (copy), l__TweenService__2 (copy)
+	task.spawn(function() --[[ Line: 517 ]]
+		-- upvalues: u126 (copy), u1 (ref), l__TweenService__2 (ref)
+		local l__Model__35 = u126.Model;
+		local u127 = l__Model__35:FindFirstChild("Start");
+		local v128 = l__Model__35:FindFirstChild("End");
+		if u127 and v128 then
+			local u129 = u126.Info or TweenInfo.new(1, Enum.EasingStyle.Sine);
+			local l__Stay__36 = u126.Stay;
+			local l__Anchor__37 = u126.Anchor;
+			local u130 = u126.EndT or 1;
+			local l__Del__38 = u126.Del;
+			local l__Skip__39 = u126.Skip;
+			l__Model__35.PrimaryPart = u127;
+			if not l__Skip__39 then
+				local v131 = l__Model__35:GetChildren();
+				for v132 = 1, #v131 do
+					local v133 = v131[v132];
+					if v133:IsA("BasePart") then
+						v133.CanCollide = false;
+						v133.Anchored = true;
+					end;
+				end;
+			end;
+			if l__Anchor__37 then
+				l__Model__35:PivotTo(l__Anchor__37);
+			end;
+			if u126.T then
+				u127.Transparency = u126.T;
+			end;
+			v128.Transparency = 1;
+			l__Model__35.Parent = u1.EFP;
+			local u134 = u127:FindFirstChildOfClass("SpecialMesh");
+			local u135 = v128:FindFirstChildOfClass("SpecialMesh");
+			local v136 = u127:FindFirstChildOfClass("Decal");
+			local v137 = v128:FindFirstChildOfClass("Decal");
+			if v137 and not l__Skip__39 then
+				v137.Transparency = 1;
+			end;
+			local u138 = 0;
+			local u139;
+			if v136 then
+				local v140 = u127:GetChildren();
+				u139 = {};
+				for v141 = 1, #v140 do
+					local v142 = v140[v141];
+					if v142:IsA("Decal") then
+						u138 = u138 + 1;
+						u139[u138] = v142;
+					end;
+				end;
+			else
+				u139 = nil;
+			end;
+			local l__Size__40 = v128.Size;
+			local l__CFrame__41 = v128.CFrame;
+			if u135 then
+				u135 = u135.Scale;
+			end;
+			local u143 = nil;
+			if l__Del__38 then
+				l__TweenService__2:Create(u127, u129, {
+					Size = l__Size__40,
+					CFrame = l__CFrame__41
+				}):Play();
+				task.delay(l__Del__38, function() --[[ Line: 584 ]]
+					-- upvalues: u143 (ref), l__TweenService__2 (ref), u127 (copy), u129 (copy), u130 (copy), u139 (ref), u138 (ref), u134 (copy), u135 (copy)
+					u143 = l__TweenService__2:Create(u127, u129, {
+						Transparency = u130
+					});
+					u143:Play();
+					if u139 then
+						for v144 = 1, u138 do
+							l__TweenService__2:Create(u139[v144], u129, {
+								Transparency = u130
+							}):Play();
+						end;
+					end;
+					if u134 and u135 then
+						l__TweenService__2:Create(u134, u129, {
+							Scale = u135
+						}):Play();
+					end;
+				end);
+			else
+				if u134 and u135 then
+					l__TweenService__2:Create(u134, u129, {
+						Scale = u135
+					}):Play();
+				end;
+				if u139 then
+					for v145 = 1, u138 do
+						l__TweenService__2:Create(u139[v145], u129, {
+							Transparency = u130
+						}):Play();
+					end;
+					u143 = l__TweenService__2:Create(u127, u129, {
+						Size = l__Size__40,
+						CFrame = l__CFrame__41
+					});
+				else
+					u143 = l__TweenService__2:Create(u127, u129, {
+						Size = l__Size__40,
+						Transparency = u130,
+						CFrame = l__CFrame__41
+					});
+				end;
+				u143:Play();
+			end;
+			if not l__Stay__36 then
+				if l__Del__38 then
+					task.wait(l__Del__38 + 0.1);
+				end;
+				if u143 then
+					u143.Completed:Connect(function() --[[ Line: 619 ]]
+						-- upvalues: l__Model__35 (copy)
+						l__Model__35:Destroy();
+					end);
+				else
+					l__Model__35:Destroy();
+				end;
+			end;
+		else
+			warn("NO START OR END");
+		end;
+	end);
 end;
 function u1.PlayFlipBook(p146) --[[ Line: 629 ]]
-    -- upvalues: u1 (copy), l__RunService__3 (copy)
-    local l__Mesh__42 = p146.Mesh;
-    local u147 = p146.Delta or 0.02;
-    local l__DWC__43 = p146.DWC;
-    local u148 = p146.Repeat or 1;
-    local u149 = p146.FPS or 1;
-    local _ = p146.Loop;
-    local u150 = l__Mesh__42:FindFirstChild("Folder");
-    local u151 = l__Mesh__42:FindFirstChild("Decal");
-    local u152 = l__DWC__43 == nil and true or l__DWC__43;
-    if u150 and u151 then
-        u1.FastSpawn(function() --[[ Line: 645 ]]
-            -- upvalues: u150 (copy), u148 (copy), l__Mesh__42 (copy), u149 (copy), u151 (copy), u147 (copy), l__RunService__3 (ref), u1 (ref), u152 (ref)
-            local v153 = u150:GetChildren();
-            local v154 = #v153;
-            local v155 = v153[v154];
-            local v156 = {};
-            for v157 = 1, v154 do
-                v156[v153[v157].Name] = v153[v157];
-            end;
-            for _ = 1, u148 do
-                if not l__Mesh__42:IsDescendantOf(workspace) then
-                    break;
-                end;
-                for v158 = 1, v154, u149 do
-                    local v159 = v156[tostring(v158)] or v155;
-                    if v159 then
-                        u151.Texture = v159.Texture;
-                    end;
-                    if u147 == "Step" then
-                        l__RunService__3.RenderStepped:Wait();
-                    else
-                        u1.dtwait(u147);
-                    end;
-                end;
-            end;
-            if u152 then
-                l__Mesh__42:Destroy();
-            end;
-        end);
-    end;
+	-- upvalues: u1 (copy), l__RunService__3 (copy)
+	local l__Mesh__42 = p146.Mesh;
+	local u147 = p146.Delta or 0.02;
+	local l__DWC__43 = p146.DWC;
+	local u148 = p146.Repeat or 1;
+	local u149 = p146.FPS or 1;
+	local _ = p146.Loop;
+	local u150 = l__Mesh__42:FindFirstChild("Folder");
+	local u151 = l__Mesh__42:FindFirstChild("Decal");
+	local u152 = l__DWC__43 == nil and true or l__DWC__43;
+	if u150 and u151 then
+		u1.FastSpawn(function() --[[ Line: 645 ]]
+			-- upvalues: u150 (copy), u148 (copy), l__Mesh__42 (copy), u149 (copy), u151 (copy), u147 (copy), l__RunService__3 (ref), u1 (ref), u152 (ref)
+			local v153 = u150:GetChildren();
+			local v154 = #v153;
+			local v155 = v153[v154];
+			local v156 = {};
+			for v157 = 1, v154 do
+				v156[v153[v157].Name] = v153[v157];
+			end;
+			for _ = 1, u148 do
+				if not l__Mesh__42:IsDescendantOf(workspace) then
+					break;
+				end;
+				for v158 = 1, v154, u149 do
+					local v159 = v156[tostring(v158)] or v155;
+					if v159 then
+						u151.Texture = v159.Texture;
+					end;
+					if u147 == "Step" then
+						l__RunService__3.RenderStepped:Wait();
+					else
+						u1.dtwait(u147);
+					end;
+				end;
+			end;
+			if u152 then
+				l__Mesh__42:Destroy();
+			end;
+		end);
+	end;
 end;
 function u1.GlassLight(p165) --[[ Line: 714 ]]
-    local v166 = Instance.new("Highlight");
-    v166.FillTransparency = 1;
-    v166.OutlineTransparency = 1;
-    v166.Parent = p165;
+	local v166 = Instance.new("Highlight");
+	v166.FillTransparency = 1;
+	v166.OutlineTransparency = 1;
+	v166.Parent = p165;
 end;
 return u1;
