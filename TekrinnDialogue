@@ -1,391 +1,211 @@
--- Decompiled with Potassium's decompiler.
-
-local l__CollectionService__1 = game:GetService("CollectionService");
-local l__TextService__2 = game:GetService("TextService");
-local l__TweenService__3 = game:GetService("TweenService");
-local l__LocalPlayer__4 = game.Players.LocalPlayer;
-local v1 = {};
+-- Saved by UniversalSynSaveInstance (Join to Copy Games) https://discord.gg/wx4ThpAsmw
+print('b')
+local l_CollectionService_0 = game:GetService("CollectionService");
+local l_TextService_0 = game:GetService("TextService");
+local l_LocalPlayer_0 = game.Players.LocalPlayer;
+local v3 = {};
 local _ = {
     {
-        Text = "This will be the ",
-        Bold = false,
-        Italic = false,
-        TypeSpeed = 0.03,
-        Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 17, 17)), ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255)) }),
-        TextStrokeColor = Color3.new(0, 0, 0),
+        Text = "This will be the ", 
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)), 
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 17, 17)), 
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
+        }), 
+        TextStrokeColor = Color3.new(0, 0, 0), 
+        Bold = false, 
+        Italic = false, 
         Shake = {
-            Enabled = false,
-            Intensity = 1,
+            Enabled = false, 
+            Intensity = 1, 
             Lifetime = 2
-        }
-    },
+        }, 
+        TypeSpeed = 0.03
+    }, 
     {
-        Text = "LAST TIME!",
-        Bold = true,
-        Italic = true,
-        TypeSpeed = 0.04,
-        Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 17, 17)) }),
-        TextStrokeColor = Color3.new(0, 0, 0),
+        Text = "LAST TIME!", 
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)), 
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 17, 17))
+        }), 
+        TextStrokeColor = Color3.new(0, 0, 0), 
+        Bold = true, 
+        Italic = true, 
         Shake = {
-            Enabled = true,
-            Intensity = 5,
+            Enabled = true, 
+            Intensity = 5, 
             Lifetime = 1
-        }
+        }, 
+        TypeSpeed = 0.04
     }
 };
-function getColor(p2, p3)
-    local v4 = p3[1];
-    local _ = p3[#p3];
-    local l__Value__5 = v4.Value;
-    for v5 = 1, #p3 - 1 do
-        if p3[v5].Time <= p2 and p2 <= p3[v5 + 1].Time then
-            local v6 = p3[v5];
-            local v7 = p3[v5 + 1];
-            return v6.Value:lerp(v7.Value, (p2 - v6.Time) / (v7.Time - v6.Time));
+local function _(v5) --[[ Line: 54 ]] --[[ Name: easeOutQuad ]]
+    return math.pow(v5 - 1, 3) * 2.70158 + 1 + math.pow(v5 - 1, 2) * 1.70158;
+end;
+getColor = function(v7, v8) --[[ Line: 61 ]] --[[ Name: getColor ]]
+    local v9 = v8[1];
+    local v10 = v8[#v8];
+    local v11 = 0.5;
+    local l_Value_0 = v9.Value;
+    for v13 = 1, #v8 - 1 do
+        if v8[v13].Time <= v7 and v7 <= v8[v13 + 1].Time then
+            v9 = v8[v13];
+            v10 = v8[v13 + 1];
+            v11 = (v7 - v9.Time) / (v10.Time - v9.Time);
+            return (v9.Value:lerp(v10.Value, v11));
         end;
     end;
-    return l__Value__5;
+    return l_Value_0;
 end;
-local function u10(p8) --[[ Line: 82 ]]
-    for _, v9 in p8:GetChildren() do
-        if v9.Name == "letter" then
-            v9:SetAttribute("Ending", true);
-            game.TweenService:Create(v9, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                TextTransparency = 1,
-                TextStrokeTransparency = 1,
-                Position = v9.Position + UDim2.new(0, 0, 0, 50)
+local function v17(v14) --[[ Line: 81 ]] --[[ Name: retireTexts ]]
+    for _, v16 in v14:GetChildren() do
+        if v16.Name == "letter" then
+            v16:SetAttribute("Ending", true);
+            game.TweenService:Create(v16, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                Position = v16.Position + UDim2.new(0, 0, 0, 50), 
+                TextTransparency = 1, 
+                TextStrokeTransparency = 1
             }):Play();
-            game.Debris:AddItem(v9, 0.5);
+            game.Debris:AddItem(v16, 0.5);
         end;
     end;
 end;
-local function u16(p11) --[[ Line: 105 ]]
-    local v12 = type(p11) ~= "string" and "" or p11:gsub("^%s+", ""):gsub("%s+$", "");
-    if v12 == "" then
-        return "";
-    elseif v12:match("^rbxassetid://%d+$") then
-        return v12;
-    elseif v12:match("^rbxasset://") then
-        return v12;
-    elseif v12:match("^rbxthumb://") then
-        return v12;
-    elseif v12:lower():match("^https?://") then
-        local v13 = v12:match("create%.roblox%.com/store/asset/(%d+)") or v12:match("roblox%.com/library/(%d+)") or (v12:match("[?&]assetId=(%d+)") or v12:match("[?&]id=(%d+)"));
-        if v13 then
-            return "rbxassetid://" .. v13;
-        else
-            return v12;
-        end;
-    else
-        local v14 = v12:match("[?&]id=(%d+)");
-        if v14 then
-            return "rbxassetid://" .. v14;
-        else
-            local v15 = v12:match("(%d+)");
-            if v15 then
-                return "rbxassetid://" .. v15;
-            else
-                return v12;
-            end;
-        end;
-    end;
-end;
-local function u23(p17) --[[ Line: 166 ]]
-    if typeof(p17) == "Color3" then
-        return p17;
-    end;
-    if typeof(p17) ~= "Vector3" then
-        return nil;
-    end;
-    local l__fromRGB__6 = Color3.fromRGB;
-    local v18 = math.floor(p17.X + 0.5);
-    local v19 = math.clamp(v18, 0, 255);
-    local v20 = math.floor(p17.Y + 0.5);
-    local v21 = math.clamp(v20, 0, 255);
-    local v22 = math.floor(p17.Z + 0.5);
-    return l__fromRGB__6(v19, v21, (math.clamp(v22, 0, 255)));
-end;
-local u24 = UDim2.new(0.5, 0, 1, 0);
-local u25 = UDim2.new(0.5, 0, 0.965, 0);
-local u26 = UDim2.new(0.5, 0, 0.82, 0);
-local function u30() --[[ Line: 184 ]]
-    -- upvalues: l__LocalPlayer__4 (copy)
-    if l__LocalPlayer__4 then
-        local v27 = l__LocalPlayer__4:FindFirstChildOfClass("PlayerGui");
-        if v27 then
-            local v28 = v27:FindFirstChild("MoveEditor");
-            if v28 and (v28:IsA("ScreenGui") and v28.Enabled) then
-                local v29 = v28:FindFirstChild("Timeline", true);
-                if v29 and (v29:IsA("GuiObject") and v29.Visible) then
-                    return v29;
-                else
-                    return nil;
-                end;
-            else
-                return nil;
-            end;
-        else
-            return nil;
-        end;
-    else
-        return nil;
-    end;
-end;
-local function u38(p31, p32) --[[ Line: 207 ]]
-    -- upvalues: u25 (copy), u30 (copy), u26 (copy)
-    if not p32 then
-        return u25;
-    end;
-    local v33 = u30();
-    if not v33 then
-        return u25;
-    end;
-    if not (p31 and p31:IsA("GuiObject")) then
-        return u26;
-    end;
-    local v34 = 0;
-    local l__CurrentCamera__7 = workspace.CurrentCamera;
-    if l__CurrentCamera__7 and l__CurrentCamera__7.ViewportSize.Y > 0 then
-        v34 = l__CurrentCamera__7.ViewportSize.Y;
-    elseif p31.AbsoluteSize.Y > 0 then
-        v34 = p31.AbsoluteSize.Y;
-    end;
-    if v34 <= 0 then
-        return u26;
-    end;
-    local v35 = math.floor((p31.AbsoluteSize.Y > 0 and p31.AbsoluteSize.Y or 56) * 0.15);
-    local v36 = math.max(8, v35);
-    local v37 = math.clamp((v33.AbsolutePosition.Y - v36) / v34 + 0.06, 0.15, 0.94);
-    return UDim2.new(0.5, 0, v37, 0);
-end;
-local function u82(p39, p40) --[[ Line: 240 ]]
-    -- upvalues: l__LocalPlayer__4 (copy), l__CollectionService__1 (copy), u10 (copy), u23 (copy), u16 (copy), l__TweenService__3 (copy), u38 (copy), u24 (copy), l__TextService__2 (copy)
-    local v41 = p40 or l__LocalPlayer__4;
-    local v42;
-    if typeof(v41) == "Instance" then
-        local l__Name__8 = v41.Name;
-        v42 = type(l__Name__8) ~= "string" and "" or l__Name__8:gsub("^%s+", ""):gsub("%s+$", "");
-    elseif type(v41) == "table" then
-        local l__Name__9 = v41.Name;
-        v42 = type(l__Name__9) ~= "string" and "" or l__Name__9:gsub("^%s+", ""):gsub("%s+$", "");
-    else
-        v42 = type(v41) ~= "string" and "" or (type(v41) ~= "string" and "" or v41:gsub("^%s+", ""):gsub("%s+$", ""));
-    end;
-    local v43 = v42 == "" and (l__LocalPlayer__4 and l__LocalPlayer__4.Name or "Speaker") or v42;
-    local u44 = l__LocalPlayer__4.PlayerGui:FindFirstChild(v43 .. "KJUI") or game.ReplicatedStorage.Resources.UFW.TekrinnDialogue.KJDialogue:Clone();
-    local v45 = "";
-    local u46 = 0;
-    local u47 = 0;
-    local v48 = 0;
-    if u44:GetAttribute("Created") then
-        u44:SetAttribute("Created", os.clock());
-    else
-        local l__Template__10 = u44:WaitForChild("Holder"):WaitForChild("Template");
-        local l__ImageLabel__11 = l__Template__10:WaitForChild("ImageLabel");
-        if type(l__ImageLabel__11:GetAttribute("DefaultPosXScale")) ~= "number" then
-            local l__Position__12 = l__ImageLabel__11.Position;
-            l__ImageLabel__11:SetAttribute("DefaultPosXScale", l__Position__12.X.Scale);
-            l__ImageLabel__11:SetAttribute("DefaultPosXOffset", l__Position__12.X.Offset);
-            l__ImageLabel__11:SetAttribute("DefaultPosYScale", l__Position__12.Y.Scale);
-            l__ImageLabel__11:SetAttribute("DefaultPosYOffset", l__Position__12.Y.Offset);
-        end;
-        l__ImageLabel__11.BackgroundTransparency = 1;
-        local l__Holder__13 = u44.Holder;
-        l__Holder__13.Position = l__Holder__13.Position - UDim2.new(0, 0, 0, #l__CollectionService__1:GetTagged("KJUI") * 100);
-        l__ImageLabel__11.Position = l__ImageLabel__11.Position - UDim2.new(0, 0, 0, 100);
-        l__ImageLabel__11.ImageTransparency = 1;
-        local l__Name__14 = l__Template__10:WaitForChild("Name");
-        l__Name__14.Position = l__Name__14.Position - UDim2.new(0, 0, 0, 100);
-        l__Template__10:WaitForChild("Name").TextTransparency = 1;
-        l__Template__10:WaitForChild("Name").TextStrokeTransparency = 1;
-        game.TweenService:Create(l__ImageLabel__11, TweenInfo.new(1, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
-            ImageTransparency = 0,
-            Position = l__ImageLabel__11.Position + UDim2.new(0, 0, 0, 100)
+local function v55(v18, v19) --[[ Line: 97 ]] --[[ Name: doText ]]
+    -- upvalues: l_LocalPlayer_0 (copy), l_CollectionService_0 (copy), v17 (copy), l_TextService_0 (copy)
+    v19 = v19 or l_LocalPlayer_0;
+    local v20 = l_LocalPlayer_0.PlayerGui:FindFirstChild(v19.Name .. "KJUI") or game.ReplicatedStorage.Resources.UFW.TekrinnDialogue.KJDialogue:Clone();
+    local v21 = "";
+    local v22 = 0;
+    local v23 = 0;
+    local v24 = 0;
+    if not v20:GetAttribute("Created") then
+        local l_Template_0 = v20:WaitForChild("Holder"):WaitForChild("Template");
+        local l_Holder_0 = v20.Holder;
+        l_Holder_0.Position = l_Holder_0.Position - UDim2.new(0, 0, 0, #l_CollectionService_0:GetTagged("KJUI") * 100);
+        l_Holder_0 = l_Template_0:WaitForChild("ImageLabel");
+        l_Holder_0.Position = l_Holder_0.Position - UDim2.new(0, 0, 0, 100);
+        l_Template_0:WaitForChild("ImageLabel").ImageTransparency = 1;
+        l_Holder_0 = l_Template_0:WaitForChild("Name");
+        l_Holder_0.Position = l_Holder_0.Position - UDim2.new(0, 0, 0, 100);
+        l_Template_0:WaitForChild("Name").TextTransparency = 1;
+        l_Template_0:WaitForChild("Name").TextStrokeTransparency = 1;
+        game.TweenService:Create(l_Template_0:WaitForChild("ImageLabel"), TweenInfo.new(1, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
+            Position = l_Template_0:WaitForChild("ImageLabel").Position + UDim2.new(0, 0, 0, 100), 
+            ImageTransparency = 0
         }):Play();
-        game.TweenService:Create(l__Template__10:WaitForChild("Name"), TweenInfo.new(1, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
-            TextTransparency = 0,
-            TextStrokeTransparency = 0,
-            Position = l__Template__10:WaitForChild("Name").Position + UDim2.new(0, 0, 0, 100)
+        game.TweenService:Create(l_Template_0:WaitForChild("Name"), TweenInfo.new(1, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
+            Position = l_Template_0:WaitForChild("Name").Position + UDim2.new(0, 0, 0, 100), 
+            TextTransparency = 0, 
+            TextStrokeTransparency = 0
         }):Play();
-        task.spawn(function() --[[ Line: 286 ]]
-            -- upvalues: u44 (copy), u10 (ref), l__ImageLabel__11 (copy), l__Template__10 (copy)
-            u44:SetAttribute("Created", os.clock());
+        local l_l_Template_0_0 = l_Template_0 --[[ copy: 7 -> 25 ]];
+        task.spawn(function() --[[ Line: 129 ]]
+            -- upvalues: v20 (copy), v17 (ref), l_l_Template_0_0 (copy)
+            v20:SetAttribute("Created", os.clock());
             repeat
                 task.wait();
-            until os.clock() - u44:GetAttribute("Created") > 5 or not u44.Parent;
-            u44.Name = "deleting";
-            u10(u44.Holder.Template);
-            game.TweenService:Create(l__ImageLabel__11, TweenInfo.new(1, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
-                ImageTransparency = 1,
-                Position = l__ImageLabel__11.Position - UDim2.new(0, 0, 0, 100)
+            until os.clock() - v20:GetAttribute("Created") > 5 or not v20.Parent;
+            v20.Name = "deleting";
+            v17(v20.Holder.Template);
+            game.TweenService:Create(l_l_Template_0_0:WaitForChild("ImageLabel"), TweenInfo.new(1, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
+                Position = l_l_Template_0_0:WaitForChild("ImageLabel").Position - UDim2.new(0, 0, 0, 100), 
+                ImageTransparency = 1
             }):Play();
-            game.TweenService:Create(l__Template__10:WaitForChild("Name"), TweenInfo.new(1, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
-                TextTransparency = 1,
-                TextStrokeTransparency = 1,
-                Position = l__Template__10:WaitForChild("Name").Position - UDim2.new(0, 0, 0, 100)
+            game.TweenService:Create(l_l_Template_0_0:WaitForChild("Name"), TweenInfo.new(1, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
+                Position = l_l_Template_0_0:WaitForChild("Name").Position - UDim2.new(0, 0, 0, 100), 
+                TextTransparency = 1, 
+                TextStrokeTransparency = 1
             }):Play();
-            task.delay(1, function() --[[ Line: 305 ]]
-                -- upvalues: u44 (ref)
-                u44:Destroy();
+            task.delay(1, function() --[[ Line: 148 ]]
+                -- upvalues: v20 (ref)
+                v20:Destroy();
             end);
         end);
-    end;
-    u44.Parent = l__LocalPlayer__4.PlayerGui;
-    u44.Enabled = true;
-    u44.Name = v43 .. "KJUI";
-    u44:AddTag("KJUI");
-    local l__Holder__15 = u44:WaitForChild("Holder");
-    local l__Template__16 = l__Holder__15:WaitForChild("Template");
-    local l__Name__17 = l__Template__16:WaitForChild("Name");
-    l__Name__17.Text = v43;
-    local v49 = l__Template__16:FindFirstChild("ImageLabel");
-    local v50;
-    if type(v41) == "table" then
-        v50 = v41.__MoveEditorCustomText == true;
     else
-        v50 = false;
+        v20:SetAttribute("Created", os.clock());
     end;
-    local v51 = type(v41) == "table" and u23(v41.NameColor);
-    if v51 then
-        l__Name__17.TextColor3 = v51;
+    v20.Parent = l_LocalPlayer_0.PlayerGui;
+    v20.Enabled = true;
+    v20.Name = v19.Name .. "KJUI";
+    v20:AddTag("KJUI");
+    v20:WaitForChild("Holder"):WaitForChild("Template"):WaitForChild("Name").Text = v19.Name;
+    for _, v29 in v18 do
+        v21 = v21 .. v29.Text;
     end;
-    if v49 and v49:IsA("ImageLabel") then
-        local v52 = v49:GetAttribute("DefaultImage");
-        if type(v52) ~= "string" then
-            v52 = v49.Image;
-            v49:SetAttribute("DefaultImage", v52);
-        end;
-        local v53 = v49:GetAttribute("DefaultPosXScale");
-        local v54 = v49:GetAttribute("DefaultPosXOffset");
-        local v55 = v49:GetAttribute("DefaultPosYScale");
-        local v56 = v49:GetAttribute("DefaultPosYOffset");
-        if type(v53) ~= "number" or (type(v54) ~= "number" or (type(v55) ~= "number" or type(v56) ~= "number")) then
-            local l__Position__18 = v49.Position;
-            v53 = l__Position__18.X.Scale;
-            v54 = l__Position__18.X.Offset;
-            v55 = l__Position__18.Y.Scale;
-            v56 = l__Position__18.Y.Offset;
-            v49:SetAttribute("DefaultPosXScale", v53);
-            v49:SetAttribute("DefaultPosXOffset", v54);
-            v49:SetAttribute("DefaultPosYScale", v55);
-            v49:SetAttribute("DefaultPosYOffset", v56);
-        end;
-        v49.BackgroundTransparency = 1;
-        if v50 then
-            local v57 = u16(type(v41) == "table" and (v41.Icon or "") or "");
-            if v57 == "" then
-                v49.Image = v52;
-                v49.Visible = false;
-                v49.ImageTransparency = 1;
-                v49.Position = UDim2.new(v53, v54, v55, v56);
-            else
-                v49.Image = v57;
-                v49.Visible = true;
-                v49.ImageTransparency = 0;
-                v49.Position = UDim2.new(v53, v54, v55 - 0.1, v56);
-                warn(v57);
-                warn(v49);
-            end;
-        else
-            v49.Image = v52;
-            v49.Visible = true;
-            v49.ImageTransparency = 0;
-            v49.Position = UDim2.new(v53, v54, v55, v56);
-        end;
-    end;
-    for _, v58 in p39 do
-        v45 = v45 .. v58.Text;
-    end;
-    local v59 = false;
-    for _, v60 in pairs(p39) do
-        if v60.HigherUp then
-            l__TweenService__3:Create(u44.Holder, TweenInfo.new(0.2), {
-                Position = u38(l__Holder__15, v50)
+    local v30 = false;
+    for _, v32 in pairs(v18) do
+        if v32.HigherUp then
+            v30 = true;
+            game:GetService("TweenService"):Create(v20.Holder, TweenInfo.new(0.2), {
+                Position = UDim2.new(0.5, 0, 0.965, 0)
             }):Play();
-            v59 = true;
         end;
     end;
-    if not v59 and u44.Holder.Position ~= u24 then
-        l__TweenService__3:Create(u44.Holder, TweenInfo.new(1), {
-            Position = u24
+    if not v30 and v20.Holder.Position ~= UDim2.new(0.5, 0, 1, 0) then
+        game:GetService("TweenService"):Create(v20.Holder, TweenInfo.new(1), {
+            Position = UDim2.new(0.5, 0, 1, 0)
         }):Play();
     end;
-    u10(u44.Holder.Template);
-    for _, v61 in p39 do
-        local v62;
-        if v61 then
-            v62 = v61.GapBefore;
-        else
-            v62 = v61;
-        end;
-        local v63 = tonumber(v62) or 0;
-        u46 = u46 + math.clamp(v63 ~= v63 and 0 or v63, -300, 300);
-        local v64 = string.split(v61.Text, "");
-        local v65 = v61.Bold and Enum.Font.SourceSansBold or (v61.Italic and Enum.Font.SourceSansItalic or Enum.Font.SourceSans);
-        for _, v66 in v64 do
-            u46 = u46 + l__TextService__2:GetTextSize(v66, 25, v65, Vector2.new(100, 100)).X;
+    v17(v20.Holder.Template);
+    for _, v34 in v18 do
+        local v35 = string.split(v34.Text, "");
+        local v36 = v34.Bold and Enum.Font.SourceSansBold or v34.Italic and Enum.Font.SourceSansItalic or Enum.Font.SourceSans;
+        for _, v38 in v35 do
+            v22 = v22 + l_TextService_0:GetTextSize(v38, 25, v36, Vector2.new(100, 100)).X;
         end;
     end;
-    for _, u67 in p39 do
-        local v68;
-        if u67 then
-            v68 = u67.GapBefore;
-        else
-            v68 = u67;
-        end;
-        local v69 = tonumber(v68) or 0;
-        u47 = u47 + math.clamp(v69 ~= v69 and 0 or v69, -300, 300);
-        local v70 = string.split(u67.Text, "");
-        local v71 = u67.Bold and Enum.Font.SourceSansBold or (u67.Italic and Enum.Font.SourceSansItalic or Enum.Font.SourceSans);
-        for _, v72 in v70 do
-            local v73 = l__TextService__2:GetTextSize(v72, 25, v71, Vector2.new(100, 100));
-            local u74 = Instance.new("TextLabel");
-            UDim2.new(0.5, u47 - u46 / 2 // 1, 0.5, 0);
-            u74.AnchorPoint = Vector2.new(0, 0.5);
-            u74.Position = UDim2.new(0.5, u47 - u46 / 2 // 1, 0.5, 10);
-            u74.Size = UDim2.new(0, v73.X, 0, v73.Y);
-            u74.Text = v72;
-            u74.Name = "letter";
-            u74.Font = v71;
-            u74.TextSize = 25;
-            u74.Parent = u44.Holder.Template;
-            u74.BackgroundTransparency = 1;
-            u74.TextStrokeColor3 = u67.TextStrokeColor;
-            u74.TextStrokeTransparency = 0;
-            u74.TextStrokeTransparency = 1;
-            u74.TextTransparency = 1;
-            task.delay(v48, function() --[[ Line: 462 ]]
-                -- upvalues: u67 (copy), u74 (copy), u47 (copy), u46 (copy), u44 (copy)
-                local v75 = os.clock();
+    for _, v40 in v18 do
+        local v41 = string.split(v40.Text, "");
+        local v42 = v40.Bold and Enum.Font.SourceSansBold or v40.Italic and Enum.Font.SourceSansItalic or Enum.Font.SourceSans;
+        for _, v44 in v41 do
+            local l_l_TextService_0_TextSize_0 = l_TextService_0:GetTextSize(v44, 25, v42, Vector2.new(100, 100));
+            local l_TextLabel_0 = Instance.new("TextLabel");
+            local l_v22_0 = v22;
+            local l_v23_0 = v23;
+            local _ = UDim2.new(0.5, l_v23_0 - l_v22_0 / 2 // 1, 0.5, 0);
+            l_TextLabel_0.AnchorPoint = Vector2.new(0, 0.5);
+            l_TextLabel_0.Position = UDim2.new(0.5, l_v23_0 - l_v22_0 / 2 // 1, 0.5, 10);
+            l_TextLabel_0.Size = UDim2.new(0, l_l_TextService_0_TextSize_0.X, 0, l_l_TextService_0_TextSize_0.Y);
+            l_TextLabel_0.Text = v44;
+            l_TextLabel_0.Name = "letter";
+            l_TextLabel_0.Font = v42;
+            l_TextLabel_0.TextSize = 25;
+            l_TextLabel_0.Parent = v20.Holder.Template;
+            l_TextLabel_0.BackgroundTransparency = 1;
+            l_TextLabel_0.TextStrokeColor3 = v40.TextStrokeColor;
+            l_TextLabel_0.TextStrokeTransparency = 0;
+            l_TextLabel_0.TextStrokeTransparency = 1;
+            l_TextLabel_0.TextTransparency = 1;
+            task.delay(v24, function() --[[ Line: 221 ]]
+                -- upvalues: v40 (copy), l_TextLabel_0 (copy), l_v23_0 (copy), l_v22_0 (copy), v20 (copy)
+                local v50 = os.clock();
                 repeat
-                    local v76 = (os.clock() - v75) / 0.35;
-                    local v77 = math.min(v76, 1);
-                    local v78 = (os.clock() - v75) / u67.Shake.Lifetime;
-                    local v79 = math.min(v78, 1);
-                    local v80 = not u67.Shake.Enabled and UDim2.new(0, 0, 0, 0) or UDim2.new(0, math.random(-u67.Shake.Intensity, u67.Shake.Intensity) * (1 - v79), 0, math.random(-u67.Shake.Intensity, u67.Shake.Intensity) * (1 - v79));
-                    local v81 = 1 - (math.pow(v77 - 1, 3) * 2.70158 + 1 + math.pow(v77 - 1, 2) * 1.70158);
-                    u74.TextStrokeTransparency = (1 - v77) ^ 10;
-                    u74.TextTransparency = v81;
-                    u74.TextSize = 25 + 25 * v81;
-                    u74.TextColor3 = getColor(v77, u67.Color.Keypoints);
-                    u74.Position = UDim2.new(0.5, u47 - u46 / 2 // 1, 0.5, 0) + v80;
+                    local v51 = math.min((os.clock() - v50) / 0.35, 1);
+                    local v52 = math.min((os.clock() - v50) / v40.Shake.Lifetime, 1);
+                    local v53 = not v40.Shake.Enabled and UDim2.new(0, 0, 0, 0) or UDim2.new(0, math.random(-v40.Shake.Intensity, v40.Shake.Intensity) * (1 - v52), 0, math.random(-v40.Shake.Intensity, v40.Shake.Intensity) * (1 - v52));
+                    local v54 = 1 - (math.pow(v51 - 1, 3) * 2.70158 + 1 + math.pow(v51 - 1, 2) * 1.70158);
+                    l_TextLabel_0.TextStrokeTransparency = (1 - v51) ^ 10;
+                    l_TextLabel_0.TextTransparency = v54;
+                    l_TextLabel_0.TextSize = 25 + 25 * v54;
+                    l_TextLabel_0.TextColor3 = getColor(v51, v40.Color.Keypoints);
+                    l_TextLabel_0.Position = UDim2.new(0.5, l_v23_0 - l_v22_0 / 2 // 1, 0.5, 0) + v53;
                     task.wait();
-                until os.clock() - v75 > math.max(0.35, u67.Shake.Lifetime) or (not u74 or (not u74:IsDescendantOf(u44) or u74:GetAttribute("Ending")));
-                if u74 then
-                    u74.TextStrokeTransparency = 0;
-                    u74.TextTransparency = 0;
-                    u74.TextSize = 25;
-                    u74.TextColor3 = u67.Color.Keypoints[#u67.Color.Keypoints].Value;
-                    u74.Position = UDim2.new(0.5, u47 - u46 / 2 // 1, 0.5, 0);
+                until os.clock() - v50 > math.max(0.35, v40.Shake.Lifetime) or not l_TextLabel_0 or not l_TextLabel_0:IsDescendantOf(v20) or l_TextLabel_0:GetAttribute("Ending");
+                if l_TextLabel_0 then
+                    l_TextLabel_0.TextStrokeTransparency = 0;
+                    l_TextLabel_0.TextTransparency = 0;
+                    l_TextLabel_0.TextSize = 25;
+                    l_TextLabel_0.TextColor3 = v40.Color.Keypoints[#v40.Color.Keypoints].Value;
+                    l_TextLabel_0.Position = UDim2.new(0.5, l_v23_0 - l_v22_0 / 2 // 1, 0.5, 0);
                 end;
             end);
-            v48 = v48 + u67.TypeSpeed;
-            u47 = u47 + v73.X;
+            v24 = v24 + v40.TypeSpeed;
+            v23 = v23 + l_l_TextService_0_TextSize_0.X;
         end;
     end;
 end;
-function v1.Speak(p83, p84) --[[ Line: 514 ]]
-    -- upvalues: u82 (copy)
-    u82(p84, p83);
+v3.Speak = function(v56, v57) --[[ Line: 273 ]]
+    -- upvalues: v55 (copy)
+    v55(v57, v56);
 end;
-return v1;
+return v3;
