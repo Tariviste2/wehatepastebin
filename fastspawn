@@ -1,0 +1,15 @@
+-- Decompiled with Potassium's decompiler.
+
+return function(u1, ...) --[[ Line: 5 ]]
+    local v2 = type(u1) == "function";
+    assert(v2);
+    local u3 = { ... };
+    local u4 = select("#", ...);
+    local v5 = Instance.new("BindableEvent");
+    v5.Event:Connect(function() --[[ Line: 12 ]]
+        -- upvalues: u1 (copy), u3 (copy), u4 (copy)
+        u1(unpack(u3, 1, u4));
+    end);
+    v5:Fire();
+    v5:Destroy();
+end;
