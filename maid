@@ -1,0 +1,102 @@
+-- Decompiled with Potassium's decompiler.
+
+local u1 = {
+    ClassName = "Maid"
+};
+function u1.new() --[[ Line: 18 ]]
+    -- upvalues: u1 (copy)
+    return setmetatable({
+        _tasks = {}
+    }, u1);
+end;
+function u1.isMaid(p2) --[[ Line: 24 ]]
+    local v3;
+    if type(p2) == "table" then
+        v3 = p2.ClassName == "Maid";
+    else
+        v3 = false;
+    end;
+    return v3;
+end;
+function u1.__index(p4, p5) --[[ Line: 30 ]]
+    -- upvalues: u1 (copy)
+    if u1[p5] then
+        return u1[p5];
+    else
+        return p4._tasks[p5];
+    end;
+end;
+function u1.__newindex(p6, p7, p8) --[[ Line: 47 ]]
+    -- upvalues: u1 (copy)
+    if u1[p7] ~= nil then
+        error(("\'%s\' is reserved"):format((tostring(p7))), 2);
+    end;
+    local l___tasks__1 = p6._tasks;
+    local v9 = l___tasks__1[p7];
+    if v9 == p8 then
+    else
+        l___tasks__1[p7] = p8;
+        if v9 then
+            if type(v9) == "function" then
+                v9();
+                return;
+            end;
+            if typeof(v9) == "RBXScriptConnection" then
+                v9:Disconnect();
+                return;
+            end;
+            if v9.Destroy then
+                v9:Destroy();
+                return;
+            end;
+            if v9.destroy then
+                v9:destroy();
+            end;
+        end;
+    end;
+end;
+function u1.giveTask(p10, p11) --[[ Line: 77 ]]
+    if not p11 then
+        error("Task cannot be false or nil", 2);
+    end;
+    local v12 = #p10._tasks + 1;
+    p10[v12] = p11;
+    if type(p11) == "table" and not (p11.Destroy or p11.destroy) then
+        warn("[Maid.GiveTask] - Gave table task without .Destroy\n\n" .. debug.traceback());
+    end;
+    return v12;
+end;
+function u1.give(p13, p14) --[[ Line: 109 ]]
+    if type(p14) ~= "table" or not p14.isAPromise then
+        return p14, p13:giveTask(p14);
+    end;
+    local v15, v16 = p13:givePromise(p14);
+    _ = v15;
+    return p14, v16;
+end;
+function u1.doCleaning(p17) --[[ Line: 121 ]]
+    local l___tasks__2 = p17._tasks;
+    for v18, v19 in pairs(l___tasks__2) do
+        if typeof(v19) == "RBXScriptConnection" then
+            l___tasks__2[v18] = nil;
+            v19:Disconnect();
+        end;
+    end;
+    local v20, v21 = next(l___tasks__2);
+    while v21 ~= nil do
+        l___tasks__2[v20] = nil;
+        if type(v21) == "function" then
+            v21();
+        elseif typeof(v21) == "RBXScriptConnection" then
+            v21:Disconnect();
+        elseif v21.Destroy then
+            v21:Destroy();
+        elseif v21.destroy then
+            v21:destroy();
+        end;
+        v20, v21 = next(l___tasks__2);
+    end;
+end;
+u1.destroy = u1.doCleaning;
+u1.clean = u1.doCleaning;
+return u1;
