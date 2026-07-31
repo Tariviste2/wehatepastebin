@@ -172,7 +172,7 @@ local function u82(p39, p40) --[[ Line: 240 ]]
         v42 = type(v41) ~= "string" and "" or (type(v41) ~= "string" and "" or v41:gsub("^%s+", ""):gsub("%s+$", ""));
     end;
     local v43 = v42 == "" and (l__LocalPlayer__4 and l__LocalPlayer__4.Name or "Speaker") or v42;
-    local u44 = l__LocalPlayer__4.PlayerGui:FindFirstChild(v43 .. "KJUI") or game.ReplicatedStorage.Assets.UFW.TekrinnDialogue.KJDialogue:Clone();
+    local u44 = l__LocalPlayer__4.PlayerGui:FindFirstChild(v43 .. "KJUI") or game.ReplicatedStorage.Resources.UFW.TekrinnDialogue.KJDialogue:Clone();
     local v45 = "";
     local u46 = 0;
     local u47 = 0;
