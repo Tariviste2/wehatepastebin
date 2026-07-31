@@ -1,0 +1,36 @@
+-- Decompiled with Potassium's decompiler.
+
+-- what is the point of this skull
+
+local u1 = {
+    Removing = {}
+};
+
+function u1.AddItem(p2, u3, p4) -- Line: 4
+    -- upvalues: u1 (copy)
+    u1.Removing[u3] = true;
+    task.delay(p4, function() -- Line: 7
+        -- upvalues: u3 (copy), u1 (ref)
+        if not u3:IsDescendantOf(game) then
+            return;
+        end;
+
+        if not u1.Removing[u3] then
+            return;
+        end;
+
+        u1.Removing[u3] = nil;
+        u3:Destroy();
+    end);
+end;
+
+function u1.RemoveItem(p5, p6) -- Line: 16
+    -- upvalues: u1 (copy)
+    if not u1.Removing[p6] then
+        return;
+    end;
+
+    u1.Removing[p6] = nil;
+end;
+
+return u1;
